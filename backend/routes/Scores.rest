@@ -1,0 +1,37 @@
+GET http://localhost:3000/scores/
+
+###
+
+GET http://localhost:3000/scores/654a20ed72e2cceac89d2be4
+
+###
+
+POST http://localhost:3000/scores
+Content-Type: application/json
+
+{
+    "player": "6547c4de0846c3f0a26f0c04",
+    "game": "6547cc7b47e93b67387b0ad2",
+    "date": "05/11/2023",
+    "score": "1000",
+    "place": "1"
+}
+
+###
+
+DELETE http://localhost:3000/scores/6547c963f300466904e98c27
+
+
+###
+
+PATCH http://localhost:3000/scores/6547cf8877152c9f7e778168
+Content-Type: application/json
+
+{
+    "player": "6547c4de0846c3f0a26f0c04",
+    "game": "6547cc7b47e93b67387b0ad2",
+    "date": "05/11/2023",
+    "score": "250",
+    "place": "2"
+}
+
