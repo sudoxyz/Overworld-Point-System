@@ -17,10 +17,7 @@ This project is currently in its early stages of development. The core functiona
 **Prerequisites:**
 
 * Node.js and npm (or yarn) installed on your system.
-<<<<<<< HEAD
-=======
 * MongoDB installed on your system.
->>>>>>> 200c31c85a61cb1dc116632fd2beeb2c634e5f81
 * A basic understanding of React, Node.js, Express, and MongoDB.
 
 **Installation:**
@@ -28,7 +25,7 @@ This project is currently in its early stages of development. The core functiona
 1. Clone this repository:
 
    ```bash
-   git clone [https://github.com/](https://github.com/)sudoxyz/Overworld-Point-System.git
+   git clone https://github.com/sudoxyz/Overworld-Point-System.git
    ```
 2. Navigate to the project directory:
    ```bash
@@ -45,13 +42,13 @@ This project is currently in its early stages of development. The core functiona
 
 4. Start backend:
    ```bash
-   cd backend
+   cd ../backend
    npm run start
    ```
 
 5. Start frontend:
    ```bash
-   cd frontend
+   cd ../frontend
    npm run dev
    ```
 
