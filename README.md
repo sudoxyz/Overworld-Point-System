@@ -42,13 +42,13 @@ This project is currently in its early stages of development. The core functiona
 
 4. Start backend:
    ```bash
-   cd backend
+   cd ../backend
    npm run start
    ```
 
 5. Start frontend:
    ```bash
-   cd frontend
+   cd ../frontend
    npm run dev
    ```
 
