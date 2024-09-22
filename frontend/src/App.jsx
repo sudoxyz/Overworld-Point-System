@@ -4,7 +4,7 @@ import request from 'superagent';
 const App = () => {
   const [students, setStudents] = useState([]); // List of students
   const [selectedStudentId, setSelectedStudentId] = useState(null); // Selected student ID
-  const [editStudentId, setEditStudentId] = useState(null); // ID of student being edited (optional)
+  const [editStudentId, setEditStudentId] = useState(null); // ID of student being edited 
   const [editedStudentData, setEditedStudentData] = useState({ name: '', coins: 0 }); // Data for editing
   const [newName, setNewName] = useState("");
   const [newCoins, setNewCoins] = useState(0); // Default initial coins
@@ -33,7 +33,6 @@ const App = () => {
   const handleAddStudent = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
 
-    // Validation (optional)
     if (!newName) {
       alert("Please enter a name for the student.");
       return;
@@ -42,18 +41,17 @@ const App = () => {
       const response = await request
         .post(`${apiURL}/students`)
         .send({ name: newName, coins: newCoins }); // Send data to API
-      //. window.location.reload();
     } catch (error) {
       console.error(error);
       alert("Error adding student. Please try again.");
     }
   };
 
-  // Function to initiate student edit (optional for UI)
+  // Function to initiate student edit 
   const handleEditStudent = (studentId) => {
     setEditStudentId(studentId);
     const studentToEdit = students.find((student) => student._id === studentId);
-    setEditedStudentData({ name: studentToEdit.name, coins: studentToEdit.coins }); // Pre-fill edit form
+    setEditedStudentData({ name: studentToEdit.name, coins: studentToEdit.coins }); 
   };
 
   // Function to handle student data changes during editing
@@ -74,20 +72,17 @@ const App = () => {
 
       const updatedStudent = await response.json();
       setStudents(students.map((student) => (student._id === studentId ? updatedStudent : student)));
-      // Handle successful update (e.g., display success message)
+
       alert('Student details updated successfully!');
     } catch (error) {
       console.error('Error updating student:', error);
       alert('Error updating student. Please try again.');
     }
   };
-  // Function to handle student removal
   const handleRemoveStudent = async (studentId) => {
     try {
       const response = await request
         .delete(`${apiURL}/students/${studentId}`);
-
-      // Handle successful removal (e.g., display a message)
       alert('Student removed successfully!');
       fetchStudents(); // Refresh the student list
     } catch (error) {
@@ -118,7 +113,7 @@ const App = () => {
           <h3>Name: {students.find((s) => s._id === selectedStudentId)?.name}</h3>
           <h3>Coins: {students.find((s) => s._id === selectedStudentId)?.coins}</h3>
           <h3>ID: {students.find((s) => s._id === selectedStudentId)?._id}</h3>
-          {editStudentId ? ( // Display edit form if editing
+          {editStudentId ? ( 
             <form onSubmit={() => handleUpdateStudent(editStudentId)}>
               <label htmlFor="name">Name: </label>
               <input
@@ -144,14 +139,12 @@ const App = () => {
               </button>
             </form>
           ) : (
-            // Display edit button (optional)
             <button onClick={() => handleEditStudent(selectedStudentId)}>
               Edit
             </button>
           )}
           {selectedStudentId && (
             <div>
-              {/* ... (other elements) */}
               <button onClick={() => handleRemoveStudent(selectedStudentId)}>
                 Remove Student
               </button>
