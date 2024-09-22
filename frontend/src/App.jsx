@@ -1,62 +1,169 @@
 import { useState, useEffect } from "react";
 import request from 'superagent';
 
-
 const App = () => {
+  const [students, setStudents] = useState([]); // List of students
+  const [selectedStudentId, setSelectedStudentId] = useState(null); // Selected student ID
+  const [editStudentId, setEditStudentId] = useState(null); // ID of student being edited (optional)
+  const [editedStudentData, setEditedStudentData] = useState({ name: '', coins: 0 }); // Data for editing
+  const [newName, setNewName] = useState("");
+  const [newCoins, setNewCoins] = useState(0); // Default initial coins
 
 
-  const apiURL = 'http://localhost:3000';
+  const apiURL = 'http://localhost:3000'; // Your student API endpoint
 
-  function AddStudent(data) {
-    const sendData = {
-      name: data
+  // Function to fetch students from the API
+  const fetchStudents = async () => {
+    try {
+      const response = await fetch(`${apiURL}/students`);
+      const studentData = await response.json();
+      setStudents(studentData);
+    } catch (error) {
+      console.error(error);
     }
-    console.log(sendData)
-    request
-      .post(`${apiURL}/students`)
-      .send(sendData) // Send an object with the 'name' property
-      .set('Content-Type', 'application/json') // Set the content type (optional, depending on your API)
-      .end((err, response) => {
-        if (err) {
-          console.error('Error:', err);
-        } else {
-          console.log('Response:', response.body);
-          // You can handle the response data as needed (e.g., update your UI)
-        }
-      });
-  }
+  };
 
-  function Remove(tableData, idData) {
-    console.log(tableData, idData)
-    request
-      .delete(`${apiURL}/${tableData}/${idData}`)
-      .end((err, response) => {
-        if (err) {
-          console.error('Error:', err);
-        } else {
-          console.log('Response:', response.body);
-          // You can handle the response data as needed (e.g., update your UI)
-        }
-      });
-  }
+  // Function to handle student selection
+  const handleStudentSelect = (studentId) => {
+    setSelectedStudentId(studentId);
+    setEditStudentId(null); // Reset edit state
+    setEditedStudentData({ name: '', coins: 0 }); // Clear edit data
+  };
 
+  const handleAddStudent = async (e) => {
+    e.preventDefault(); // Prevent default form submission behavior
+
+    // Validation (optional)
+    if (!newName) {
+      alert("Please enter a name for the student.");
+      return;
+    }
+    try {
+      const response = await request
+        .post(`${apiURL}/students`)
+        .send({ name: newName, coins: newCoins }); // Send data to API
+      //. window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alert("Error adding student. Please try again.");
+    }
+  };
+
+  // Function to initiate student edit (optional for UI)
+  const handleEditStudent = (studentId) => {
+    setEditStudentId(studentId);
+    const studentToEdit = students.find((student) => student._id === studentId);
+    setEditedStudentData({ name: studentToEdit.name, coins: studentToEdit.coins }); // Pre-fill edit form
+  };
+
+  // Function to handle student data changes during editing
+  const handleEditInputChange = (event) => {
+    setEditedStudentData({ ...editedStudentData, [event.target.name]: event.target.value });
+  };
+
+  // Function to submit changes and update student details
+  const handleUpdateStudent = async (studentId) => {
+    try {
+      const updatedData = { ...editedStudentData }; // Copy edited data
+
+      const response = await request
+        .patch(`${apiURL}/students/${studentId}`)
+        .send(updatedData); // Send data to API
+      console.log(`${apiURL}/students/${studentId}`)
+      const updatedStudent = await response.json();
+      console.log('API response:', updatedStudent); // Log the API response
+
+
+      // Update students state with the updated student
+      setStudents(students.map((student) => (student._id === studentId ? updatedStudent : student)));
+
+      // Handle successful update (e.g., close edit form, display success message)
+      alert('Student details updated successfully!'); // Replace with appropriate feedback
+      setEditStudentId(null); // Reset edit state
+      
+    } catch (error) {
+      console.error(error);
+      alert('Error updating student. Please try again.'); // Display error message
+    }
+    console.log(`${apiURL}/students/${studentId}`)
+    console.log('API response:', updatedStudent); // Log the API response
+  };
 
   useEffect(() => {
-    // Make a GET request to your API to fetch Coins data
-    fetch("http://localhost:3000/coins")
-      .then((response) => response.json())
-      .then((data) => setCoinss(data))
-      .catch((error) => console.error(error));
-
-    fetch("http://localhost:3000/students")
-      .then((response) => response.json())
-      .then((data) => setStudents(data))
-      .catch((error) => console.error(error));
+    fetchStudents(); // Fetch students on component mount
   }, []);
-
 
   return (
     <div>
+      <h2>Students</h2>
+      <select value={selectedStudentId} onChange={(e) => handleStudentSelect(e.target.value)}>
+        <option value="">Select a student</option>
+        {students.map((student) => (
+          <option key={student._id} value={student._id}>
+            {student.name}
+          </option>
+        ))}
+      </select>
+
+      {selectedStudentId && (
+        <div>
+          <h2>Selected Student Details:</h2>
+          <h3>Name: {students.find((s) => s._id === selectedStudentId)?.name}</h3>
+          <h3>Coins: {students.find((s) => s._id === selectedStudentId)?.coins}</h3>
+          <h3>ID: {students.find((s) => s._id === selectedStudentId)?._id}</h3>
+          {editStudentId ? ( // Display edit form if editing
+            <form onSubmit={() => handleUpdateStudent(editStudentId)}>
+              <label htmlFor="name">Name: </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={editedStudentData.name}
+                onChange={handleEditInputChange}
+              />
+              <br />
+              <label htmlFor="coins">Coins: </label>
+              <input
+                type="number"
+                id="coins"
+                name="coins"
+                value={editedStudentData.coins}
+                onChange={handleEditInputChange}
+              />
+              <br />
+              <button type="submit">Save Changes</button>
+              <button type="button" onClick={() => setEditStudentId(null)}>
+                Cancel
+              </button>
+            </form>
+          ) : (
+            // Display edit button (optional)
+            <button onClick={() => handleEditStudent(selectedStudentId)}>
+              Edit
+            </button>
+          )}
+        </div>
+      )}
+      <h2>Add New Student</h2>
+      <form onSubmit={handleAddStudent}>
+        <label htmlFor="name">Name: </label>
+        <input
+          type="text"
+          id="name"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <br />
+        <label htmlFor="coins">Initial Coins: </label>
+        <input
+          type="number"
+          id="coins"
+          value={newCoins}
+          onChange={(e) => setNewCoins(Number(e.target.value))}
+        />
+        <br />
+        <button type="submit">Add Student</button>
+      </form>
     </div>
   );
 };

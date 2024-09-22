@@ -46,8 +46,12 @@ async function getStudent(req, res, next) {
 }
 
 router.patch("/:id", getStudent, async (req, res, next) => {
+  
   if (req.body.name != null) {
     res.Student.name = req.body.name;
+  }
+  if (req.body.coins != null) {
+    res.Student.coins = req.body.coins;
   }
   try {
     const updatedStudent = await res.Student.save();
@@ -61,6 +65,7 @@ router.patch("/:id", getStudent, async (req, res, next) => {
 router.post("/", async (req, res) => {
   const Student = new Students({
     name: req.body.name,
+    coins: req.body.coins
   });
 
   try {

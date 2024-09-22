@@ -14,8 +14,6 @@ app.use(express.json());
 const studentRouter = require("./routes/Students");
 app.use("/students", studentRouter);
 
-const coinsRouter = require("./routes/Coins");
-app.use("/coins", coinsRouter);
 
 // Start the server
 app.listen(3000, function () {

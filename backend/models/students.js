@@ -5,6 +5,10 @@ const playersSchema = new mongodb.Schema({
     name: {
         type: String,
         required: true
+    },
+    coins: {
+        type: Number,
+        required: true
     }
 })
 
