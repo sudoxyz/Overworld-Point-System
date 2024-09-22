@@ -25,7 +25,7 @@ This project is currently in its early stages of development. The core functiona
 1. Clone this repository:
 
    ```bash
-   git clone [https://github.com/](https://github.com/)sudoxyz/Overworld-Point-System.git
+   git clone https://github.com/sudoxyz/Overworld-Point-System.git
    ```
 2. Navigate to the project directory:
    ```bash
