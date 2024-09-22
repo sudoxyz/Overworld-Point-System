@@ -17,6 +17,10 @@ This project is currently in its early stages of development. The core functiona
 **Prerequisites:**
 
 * Node.js and npm (or yarn) installed on your system.
+<<<<<<< HEAD
+=======
+* MongoDB installed on your system.
+>>>>>>> 200c31c85a61cb1dc116632fd2beeb2c634e5f81
 * A basic understanding of React, Node.js, Express, and MongoDB.
 
 **Installation:**
