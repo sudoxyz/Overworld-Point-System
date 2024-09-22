@@ -58,39 +58,46 @@ const App = () => {
 
   // Function to handle student data changes during editing
   const handleEditInputChange = (event) => {
+    console.log(editedStudentData)
     setEditedStudentData({ ...editedStudentData, [event.target.name]: event.target.value });
+
   };
 
   // Function to submit changes and update student details
   const handleUpdateStudent = async (studentId) => {
     try {
-      const updatedData = { ...editedStudentData }; // Copy edited data
+      const updatedData = { ...editedStudentData };
 
       const response = await request
         .patch(`${apiURL}/students/${studentId}`)
-        .send(updatedData); // Send data to API
-      console.log(`${apiURL}/students/${studentId}`)
+        .send(updatedData);
+
       const updatedStudent = await response.json();
-      console.log('API response:', updatedStudent); // Log the API response
-
-
-      // Update students state with the updated student
       setStudents(students.map((student) => (student._id === studentId ? updatedStudent : student)));
-
-      // Handle successful update (e.g., close edit form, display success message)
-      alert('Student details updated successfully!'); // Replace with appropriate feedback
-      setEditStudentId(null); // Reset edit state
-      
+      // Handle successful update (e.g., display success message)
+      alert('Student details updated successfully!');
     } catch (error) {
-      console.error(error);
-      alert('Error updating student. Please try again.'); // Display error message
+      console.error('Error updating student:', error);
+      alert('Error updating student. Please try again.');
     }
-    console.log(`${apiURL}/students/${studentId}`)
-    console.log('API response:', updatedStudent); // Log the API response
+  };
+  // Function to handle student removal
+  const handleRemoveStudent = async (studentId) => {
+    try {
+      const response = await request
+        .delete(`${apiURL}/students/${studentId}`);
+
+      // Handle successful removal (e.g., display a message)
+      alert('Student removed successfully!');
+      fetchStudents(); // Refresh the student list
+    } catch (error) {
+      console.error('Error removing student:', error);
+      alert('Error removing student. Please try again.');
+    }
   };
 
   useEffect(() => {
-    fetchStudents(); // Fetch students on component mount
+    fetchStudents();
   }, []);
 
   return (
@@ -141,6 +148,14 @@ const App = () => {
             <button onClick={() => handleEditStudent(selectedStudentId)}>
               Edit
             </button>
+          )}
+          {selectedStudentId && (
+            <div>
+              {/* ... (other elements) */}
+              <button onClick={() => handleRemoveStudent(selectedStudentId)}>
+                Remove Student
+              </button>
+            </div>
           )}
         </div>
       )}
