@@ -73,3 +73,13 @@ export const addNote = async (newNote) => {
     throw error;
   }
 };
+
+// Delete a note by note ID
+export const deleteNote = async (noteId) => {
+  try {
+    await request.delete(`${apiURL}/notes/${noteId}`);
+  } catch (error) {
+    console.error("Error deleting note:", error);
+    throw error;
+  }
+};

@@ -14,25 +14,27 @@ const StudentForm = ({ onAddStudent }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="name">Name: </label>
-      <input
-        type="text"
-        id="name"
-        value={newName}
-        onChange={(e) => setNewName(e.target.value)}
-      />
-      <br />
-      <label htmlFor="coins">Initial Coins: </label>
-      <input
-        type="number"
-        id="coins"
-        value={newCoins}
-        onChange={(e) => setNewCoins(Number(e.target.value))}
-      />
-      <br />
-      <button type="submit">Add Student</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="name">Name: </label>
+        <input
+          type="text"
+          id="name"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <br />
+        <label htmlFor="coins">Initial Coins: </label>
+        <input
+          type="number"
+          id="coins"
+          value={newCoins}
+          onChange={(e) => setNewCoins(Number(e.target.value))}
+        />
+        <br />
+        <button type="submit">Add Student</button>
+      </form>
+    </div>
   );
 };
 

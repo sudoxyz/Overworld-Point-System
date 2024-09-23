@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchStudents, addStudent, updateStudent, addCoins, removeStudent } from "./Students/studentApi";
+import { fetchStudents, addNote, addStudent, updateStudent, addCoins, removeStudent } from "./Students/studentApi";
 import StudentList from "./Students/UI/studentList";
 import StudentDetails from "./Students/UI/studentDetails";
 import StudentForm from "./Students/UI/studentForm";
@@ -21,6 +21,11 @@ const App = () => {
   
     const handleAddStudent = async (newStudent) => {
       await addStudent(newStudent);
+      setStudents(await fetchStudents());
+    };
+
+    const handleAddNote = async (newNote) => {
+      await addNote(newNote);
       setStudents(await fetchStudents());
     };
   
@@ -53,6 +58,7 @@ const App = () => {
         <StudentList students={students} selectedStudentId={selectedStudentId} onSelectStudent={setSelectedStudentId} />
         <hr />
         {selectedStudentId && (
+          
           <StudentDetails
             student={selectedStudent}
             editStudentId={editStudentId}
