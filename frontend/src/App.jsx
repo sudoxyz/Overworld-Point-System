@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
-import request from 'superagent';
+import request from "superagent";
 
 const App = () => {
   const [students, setStudents] = useState([]); // List of students
   const [selectedStudentId, setSelectedStudentId] = useState(null); // Selected student ID
-  const [editStudentId, setEditStudentId] = useState(null); // ID of student being edited 
-  const [editedStudentData, setEditedStudentData] = useState({ name: '', coins: 0 }); // Data for editing
+  const [editStudentId, setEditStudentId] = useState(null); // ID of student being edited
+  const [editedStudentData, setEditedStudentData] = useState({
+    name: "",
+    coins: 0,
+  }); // Data for editing
   const [newName, setNewName] = useState("");
   const [newCoins, setNewCoins] = useState(0); // Default initial coins
+  const [addedCoins, setAddedCoins] = useState(0);
 
-
-  const apiURL = 'http://localhost:3000'; // Your student API endpoint
+  const apiURL = "http://localhost:3000"; // Your student API endpoint
 
   // Function to fetch students from the API
   const fetchStudents = async () => {
@@ -27,7 +30,7 @@ const App = () => {
   const handleStudentSelect = (studentId) => {
     setSelectedStudentId(studentId);
     setEditStudentId(null); // Reset edit state
-    setEditedStudentData({ name: '', coins: 0 }); // Clear edit data
+    setEditedStudentData({ name: "", coins: 0 }); // Clear edit data
   };
 
   const handleAddStudent = async (e) => {
@@ -47,18 +50,28 @@ const App = () => {
     }
   };
 
-  // Function to initiate student edit 
+  // Function to initiate student edit
   const handleEditStudent = (studentId) => {
     setEditStudentId(studentId);
     const studentToEdit = students.find((student) => student._id === studentId);
-    setEditedStudentData({ name: studentToEdit.name, coins: studentToEdit.coins }); 
+    setEditedStudentData({
+      name: studentToEdit.name,
+      coins: studentToEdit.coins,
+    });
   };
 
   // Function to handle student data changes during editing
   const handleEditInputChange = (event) => {
-    console.log(editedStudentData)
-    setEditedStudentData({ ...editedStudentData, [event.target.name]: event.target.value });
+    console.log(editedStudentData);
+    setEditedStudentData({
+      ...editedStudentData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
+  const handleAddInputChange = (event) => {
+    console.log(addedCoins);
+    setAddedCoins({ ...addedCoins, coins: event.target.value });
   };
 
   // Function to submit changes and update student details
@@ -71,23 +84,38 @@ const App = () => {
         .send(updatedData);
 
       const updatedStudent = await response.json();
-      setStudents(students.map((student) => (student._id === studentId ? updatedStudent : student)));
+      setStudents(
+        students.map((student) =>
+          student._id === studentId ? updatedStudent : student
+        )
+      );
 
-      alert('Student details updated successfully!');
+      alert("Student details updated successfully!");
     } catch (error) {
-      console.error('Error updating student:', error);
-      alert('Error updating student. Please try again.');
+      console.error("Error updating student:", error);
+      alert("Error updating student. Please try again.");
+    }
+  };
+  const handleAddCoins = async (studentId) => {
+    try {
+      const response = await request
+        .patch(`${apiURL}/students/add/${studentId}`)
+        .send(addedCoins);
+
+      alert("Added coins successfully!");
+    } catch (error) {
+      console.error("Error adding coins:", error);
+      alert("Error adding coins. Please try again.");
     }
   };
   const handleRemoveStudent = async (studentId) => {
     try {
-      const response = await request
-        .delete(`${apiURL}/students/${studentId}`);
-      alert('Student removed successfully!');
+      const response = await request.delete(`${apiURL}/students/${studentId}`);
+      alert("Student removed successfully!");
       fetchStudents(); // Refresh the student list
     } catch (error) {
-      console.error('Error removing student:', error);
-      alert('Error removing student. Please try again.');
+      console.error("Error removing student:", error);
+      alert("Error removing student. Please try again.");
     }
   };
 
@@ -98,7 +126,10 @@ const App = () => {
   return (
     <div>
       <h2>Students</h2>
-      <select value={selectedStudentId} onChange={(e) => handleStudentSelect(e.target.value)}>
+      <select
+        value={selectedStudentId}
+        onChange={(e) => handleStudentSelect(e.target.value)}
+      >
         <option value="">Select a student</option>
         {students.map((student) => (
           <option key={student._id} value={student._id}>
@@ -110,10 +141,14 @@ const App = () => {
       {selectedStudentId && (
         <div>
           <h2>Selected Student Details:</h2>
-          <h3>Name: {students.find((s) => s._id === selectedStudentId)?.name}</h3>
-          <h3>Coins: {students.find((s) => s._id === selectedStudentId)?.coins}</h3>
+          <h3>
+            Name: {students.find((s) => s._id === selectedStudentId)?.name}
+          </h3>
+          <h3>
+            Coins: {students.find((s) => s._id === selectedStudentId)?.coins}
+          </h3>
           <h3>ID: {students.find((s) => s._id === selectedStudentId)?._id}</h3>
-          {editStudentId ? ( 
+          {editStudentId ? (
             <form onSubmit={() => handleUpdateStudent(editStudentId)}>
               <label htmlFor="name">Name: </label>
               <input
@@ -141,6 +176,24 @@ const App = () => {
           ) : (
             <button onClick={() => handleEditStudent(selectedStudentId)}>
               Edit
+            </button>
+          )}
+          {editStudentId ? (
+            <form onSubmit={() => handleAddCoins(editStudentId)}>
+              <label htmlFor="coins">Coins to add: </label>
+              <input
+                type="number"
+                id="coins"
+                name="coins"
+                value={addedCoins.coins}
+                onChange={handleAddInputChange}
+              />
+              <br />
+              <button type="submit">Save Changes</button>
+            </form>
+          ) : (
+            <button onClick={() => handleEditStudent(selectedStudentId)}>
+              Add Credits
             </button>
           )}
           {selectedStudentId && (

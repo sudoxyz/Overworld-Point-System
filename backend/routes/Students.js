@@ -61,6 +61,20 @@ router.patch("/:id", getStudent, async (req, res, next) => {
   }
 });
 
+// Add coins 
+router.patch("/add/:id", getStudent, async (req, res, next) => {
+
+  if (req.body.coins != null) {
+    res.Student.coins = parseInt(res.Student.coins) + parseInt(req.body.coins);
+  }
+  try {
+    const updatedStudent = await res.Student.save();
+    res.json(updatedStudent);
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
+});
+
 // Add Student
 router.post("/", async (req, res) => {
   const Student = new Students({
