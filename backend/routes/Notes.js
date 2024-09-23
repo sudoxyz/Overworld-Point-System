@@ -4,6 +4,22 @@ const router = express.Router();
 // Models
 const Notes = require("../models/notes");
 
+// Get all Notes or Notes by student_id
+router.get("/:id", async (req, res) => {
+    try {
+      const student_id = req.params.id;
+      let notes;
+
+      // Fetch notes for the specific student
+      notes = await Notes.find({ student_id: student_id });
+
+  
+      res.json(notes);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+
 // Get all Notes
 router.get("/", async (req, res) => {
   try {
