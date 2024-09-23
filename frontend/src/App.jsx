@@ -54,7 +54,7 @@ const App = () => {
   
     return (
       <div>
-        <h2>Students</h2>
+        <h2>Work Experience Mentors</h2>
         <StudentList students={students} selectedStudentId={selectedStudentId} onSelectStudent={setSelectedStudentId} />
         <hr />
         {selectedStudentId && (
@@ -73,7 +73,7 @@ const App = () => {
           />
         )}
   
-        <h2>Add New Student</h2>
+        <h2>Add New Mentor</h2>
         <StudentForm onAddStudent={handleAddStudent} />
       </div>
     );

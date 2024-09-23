@@ -32,7 +32,7 @@ const StudentForm = ({ onAddStudent }) => {
           onChange={(e) => setNewCoins(Number(e.target.value))}
         />
         <br />
-        <button type="submit">Add Student</button>
+        <button type="submit">Add Mentor</button>
       </form>
     </div>
   );

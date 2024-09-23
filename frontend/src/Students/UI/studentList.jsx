@@ -5,7 +5,7 @@
 const StudentList = ({ students, selectedStudentId, onSelectStudent }) => {
   return (
     <select value={selectedStudentId} onChange={(e) => onSelectStudent(e.target.value)}>
-      <option value="">Select a student</option>
+      <option value="">Select a Mentor</option>
       
       {students.map((student) => (
         <option key={student._id} value={student._id}>

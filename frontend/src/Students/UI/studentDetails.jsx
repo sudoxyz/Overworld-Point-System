@@ -72,7 +72,7 @@ const StudentDetails = ({
 
   return (
     <div>
-      <h2>Selected Student Details:</h2>
+      <h2>Selected Mentor Details:</h2>
       <h3>Name: {student?.name}</h3>
       <h3>Coins: {student?.coins}</h3>
       <h3>ID: {student?._id}</h3>
@@ -84,7 +84,7 @@ const StudentDetails = ({
         notes.map((note) => (
           <div key={note._id}>
             <p>
-              <strong>Mentor:</strong> {note.mentor_name}
+              <strong>Overseer:</strong> {note.mentor_name}
             </p>
             <p>
               <strong>Note:</strong> {note.notes}
@@ -99,14 +99,14 @@ const StudentDetails = ({
           </div>
         ))
       ) : (
-        <p>No notes available for this student.</p>
+        <p>No notes available for this Mentor.</p>
       )}
 
       {/* Form to Add Note */}
       <h2>Add a New Note</h2>
       {noteError && <p style={{ color: "red" }}>{noteError}</p>}
       <form onSubmit={handleAddNote}>
-        <label htmlFor="mentor_name">Mentor Name:</label>
+        <label htmlFor="mentor_name">Overseer Name:</label>
         <input
           type="text"
           id="mentor_name"
@@ -174,7 +174,7 @@ const StudentDetails = ({
       )}
 
       <button onClick={() => onRemoveStudent(student._id)}>
-        Remove Student
+        Remove Mentor
       </button>
     </div>
   );
