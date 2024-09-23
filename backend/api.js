@@ -14,10 +14,13 @@ app.use(express.json());
 app.use(cors({
   origin: '*', // Allow requests from your React app's domain
 }));
+
 // Routes
 const studentRouter = require("./routes/Students");
 app.use("/students", studentRouter);
 
+const notesRouter = require("./routes/Notes");
+app.use("/notes", notesRouter);
 
 // Start the server
 app.listen(3000, function () {

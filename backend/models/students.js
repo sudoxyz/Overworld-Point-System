@@ -4,7 +4,8 @@ const mongodb = require("mongoose");
 const playersSchema = new mongodb.Schema({
     name: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     coins: {
         type: Number,
