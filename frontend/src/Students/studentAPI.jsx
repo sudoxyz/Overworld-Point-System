@@ -64,10 +64,11 @@ export const fetchStudentNotes = async (studentId) => {
   }
 };
 
-// Add a new note
-export const addNote = async (newNote) => {
+// Add a new note to a student and optionally add coins
+export const addNote = async (noteData) => {
   try {
-    await request.post(`${apiURL}/notes`).send(newNote);
+    const response = await request.post(`${apiURL}/notes`).send(noteData);
+    return response.body;
   } catch (error) {
     console.error("Error adding note:", error);
     throw error;

@@ -18,7 +18,7 @@ const App = () => {
       };
       loadStudents();
     }, []);
-  
+   
     const handleAddStudent = async (newStudent) => {
       await addStudent(newStudent);
       setStudents(await fetchStudents());

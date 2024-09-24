@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // src/Students/StudentDetails.js
 import { useEffect, useState } from "react";
-import { fetchStudentNotes, addNote, deleteNote } from "../studentApi"; // Import it here
+import { fetchStudentNotes, addNote, deleteNote } from "../studentApi"; 
 
 const StudentDetails = ({
   student,
@@ -10,15 +10,13 @@ const StudentDetails = ({
   onEditStudent,
   onUpdateStudent,
   onEditInputChange,
-  onAddCoins,
-  addedCoins,
-  onAddInputChange,
   onRemoveStudent,
 }) => {
   const [notes, setNotes] = useState([]); // State to store notes for the student
   const [newNote, setNewNote] = useState({ mentor_name: "", notes: "" }); // State for new note
   const [noteError, setNoteError] = useState(null);
 
+  // Fetch notes when student is selected
   useEffect(() => {
     if (student?._id) {
       const loadNotes = async () => {
@@ -36,14 +34,13 @@ const StudentDetails = ({
     });
   };
 
+  // Handle deleting a note
   const handleDeleteNote = async (noteId) => {
     try {
       await deleteNote(noteId);
-      const updatedNotes = await fetchStudentNotes(student._id); // Refresh notes
-      setNotes(updatedNotes);
+      setNotes(notes.filter((note) => note._id !== noteId)); // Remove note from UI
     } catch (error) {
       console.error("Error deleting note:", error);
-      alert("Failed to delete the note.");
     }
   };
 
@@ -58,11 +55,15 @@ const StudentDetails = ({
     try {
       await addNote({
         ...newNote,
-        student_id: student._id, // Add student ID to the note
+        student_id: student._id, // Attach student ID
+        coins: parseInt(newNote.coins, 10) || 0, // Ensure coins is an integer
       });
-      setNewNote({ mentor_name: "", notes: "" }); // Reset form
-      setNoteError(null); // Clear any errors
-      const updatedNotes = await fetchStudentNotes(student._id); // Refresh notes
+
+      setNewNote({ mentor_name: "", notes: "", coins: 0 }); // Reset form
+      setNoteError(null); // Clear errors
+
+      // Refresh notes
+      const updatedNotes = await fetchStudentNotes(student._id);
       setNotes(updatedNotes);
     } catch (error) {
       console.error("Error adding note:", error);
@@ -92,6 +93,9 @@ const StudentDetails = ({
             <p>
               <strong>Date:</strong> {new Date(note.date).toLocaleString()}
             </p>
+            <p>
+            <strong>Coins added:</strong> {note.coins}
+            </p>
             <button onClick={() => handleDeleteNote(note._id)}>
               Remove Note
             </button>
@@ -102,11 +106,11 @@ const StudentDetails = ({
         <p>No notes available for this Mentor.</p>
       )}
 
-      {/* Form to Add Note */}
+      {/* Form to add a new note */}
       <h2>Add a New Note</h2>
       {noteError && <p style={{ color: "red" }}>{noteError}</p>}
       <form onSubmit={handleAddNote}>
-        <label htmlFor="mentor_name">Overseer Name:</label>
+        <label htmlFor="mentor_name">Mentor Name:</label>
         <input
           type="text"
           id="mentor_name"
@@ -123,9 +127,17 @@ const StudentDetails = ({
           onChange={handleNoteInputChange}
         />
         <br />
+        <label htmlFor="coins">Coins to Add:</label>
+        <input
+          type="number"
+          id="coins"
+          name="coins"
+          value={newNote.coins}
+          onChange={handleNoteInputChange}
+        />
+        <br />
         <button type="submit">Add Note</button>
       </form>
-
       {editStudentId ? (
         <form onSubmit={() => onUpdateStudent(editStudentId)}>
           <label htmlFor="name">Name: </label>
@@ -153,24 +165,6 @@ const StudentDetails = ({
         </form>
       ) : (
         <button onClick={() => onEditStudent(student._id)}>Edit</button>
-      )}
-
-      {/* Add Coins Functionality */}
-      {editStudentId ? (
-        <form onSubmit={() => onAddCoins(editStudentId)}>
-          <label htmlFor="coins">Coins to add: </label>
-          <input
-            type="number"
-            id="coins"
-            name="coins"
-            value={addedCoins.coins || 0}
-            onChange={onAddInputChange}
-          />
-          <br />
-          <button type="submit">Save Changes</button>
-        </form>
-      ) : (
-        <button onClick={() => onEditStudent(student._id)}>Add Credits</button>
       )}
 
       <button onClick={() => onRemoveStudent(student._id)}>
