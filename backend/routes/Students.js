@@ -44,7 +44,7 @@ async function getStudent(req, res, next) {
   res.Student = Student;
   next();
 }
-
+// Edit student data
 router.patch("/:id", getStudent, async (req, res, next) => {
   
   if (req.body.name != null) {

@@ -35,16 +35,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// Get all Notes
-router.get("/", async (req, res) => {
-  try {
-    const NoteData = await Notes.find();
-    res.json(NoteData);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
 // Add Note and Update Coins
 router.post("/", getStudent, async (req, res) => {
   const note = new Notes({

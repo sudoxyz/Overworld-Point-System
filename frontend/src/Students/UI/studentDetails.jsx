@@ -76,7 +76,7 @@ const StudentDetails = ({
       <h2>Selected Mentor Details:</h2>
       <h3>Name: {student?.name}</h3>
       <h3>Coins: {student?.coins}</h3>
-      {/* <h3>ID: {student?._id}</h3> */}
+      <h3>ID: {student?._id}</h3>
       <hr />
 
       {/* Notes Section */}
