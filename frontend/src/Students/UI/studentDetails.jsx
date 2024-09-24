@@ -76,7 +76,7 @@ const StudentDetails = ({
       <h2>Selected Mentor Details:</h2>
       <h3>Name: {student?.name}</h3>
       <h3>Coins: {student?.coins}</h3>
-      <h3>ID: {student?._id}</h3>
+      {/* <h3>ID: {student?._id}</h3> */}
       <hr />
 
       {/* Notes Section */}
@@ -99,18 +99,19 @@ const StudentDetails = ({
             <button onClick={() => handleDeleteNote(note._id)}>
               Remove Note
             </button>
-            <hr />
+           
           </div>
         ))
       ) : (
         <p>No notes available for this Mentor.</p>
       )}
+      <hr />
 
       {/* Form to add a new note */}
       <h2>Add a New Note</h2>
       {noteError && <p style={{ color: "red" }}>{noteError}</p>}
       <form onSubmit={handleAddNote}>
-        <label htmlFor="mentor_name">Mentor Name:</label>
+        <label htmlFor="mentor_name">Overseer Name:</label>
         <input
           type="text"
           id="mentor_name"
@@ -138,6 +139,7 @@ const StudentDetails = ({
         <br />
         <button type="submit">Add Note</button>
       </form>
+      <hr />
       {editStudentId ? (
         <form onSubmit={() => onUpdateStudent(editStudentId)}>
           <label htmlFor="name">Name: </label>
@@ -164,12 +166,13 @@ const StudentDetails = ({
           </button>
         </form>
       ) : (
-        <button onClick={() => onEditStudent(student._id)}>Edit</button>
+        <button onClick={() => onEditStudent(student._id)}>Edit Mentor Details</button>
       )}
 
       <button onClick={() => onRemoveStudent(student._id)}>
         Remove Mentor
       </button>
+      <hr />
     </div>
   );
 };
