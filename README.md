@@ -58,4 +58,4 @@ This project is currently in its early stages of development. The core functiona
 * Add extra visualization
 * Re-Format all code
 * Add reward tracking (point count down etc)
-* Add coin adding system (comments, time, date etc)
+✔ Add coin adding system (comments, time, date etc)
