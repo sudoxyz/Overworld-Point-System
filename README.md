@@ -98,6 +98,11 @@ Back-End:
 
     npm install
 
+### Change env
+
+    Rename .env.example to .env
+    Change default values
+
 ### Start the development server:
 
     npm run dev
@@ -111,6 +116,7 @@ Back-End:
     ├── routes/
     │   ├── Students.js   # Student routes
     │   └── Notes.js   # Notes routes
+    ├── .env.example 
     └── api.js   # Main entry point
 
 # 6. API Endpoints
